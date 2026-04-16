@@ -1,0 +1,6 @@
+{
+  "name": "EmailShield AI",
+  "description": "AI-powered phishing protection and email security analyzer. Scan sender headers and content to detect fraud and suspicious activity.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
