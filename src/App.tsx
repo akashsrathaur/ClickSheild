@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Shield, ShieldAlert, ShieldCheck, Mail, Search, AlertTriangle, CheckCircle2, Info, Loader2, Chrome, Zap, Lock, Globe, Terminal, ChevronRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -65,7 +66,7 @@ export default function App() {
           <div className="w-10 h-10 bg-info/10 border border-info/20 rounded-lg flex items-center justify-center">
             <Shield className="w-6 h-6 text-info" />
           </div>
-          <span className="font-extrabold text-2xl tracking-[0.2em] uppercase">SENTINEL<span className="text-info">.AI</span></span>
+          <span className="font-extrabold text-2xl tracking-[0.2em] uppercase">ClickSheild<span className="text-info">.AI</span></span>
         </div>
         <div className="flex items-center gap-4">
           <Badge variant="outline" className="text-[10px] tracking-widest uppercase py-1.5 px-4 rounded-full border-info/30 text-info bg-info/5">
@@ -103,19 +104,36 @@ export default function App() {
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Email Content</label>
-                      <Textarea 
-                        placeholder="Paste email body or raw source..." 
-                        className="min-h-[250px] bg-surface border-border focus:ring-info/50 resize-none font-mono text-sm p-4"
-                        value={emailContent}
-                        onChange={(e) => setEmailContent(e.target.value)}
-                      />
+                      <div className="flex items-center justify-between">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Target Email / Content</label>
+                        <div className="flex items-center gap-1.5 overflow-hidden">
+                          <div className="w-1.5 h-1.5 rounded-full bg-safe animate-pulse" />
+                          <span className="text-[10px] text-safe font-mono uppercase tracking-tighter">Live Scan Ready</span>
+                        </div>
+                      </div>
+                      <div className="relative group">
+                        <Input 
+                          placeholder="Enter sender address or paste code snippet..." 
+                          className="h-14 bg-surface/50 border-border group-hover:border-info/30 focus:ring-info/50 font-mono text-sm px-12 rounded-xl transition-all"
+                          value={emailContent}
+                          onChange={(e) => setEmailContent(e.target.value)}
+                        />
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-hover:text-info transition-colors" />
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                          <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 uppercase">
+                            Enter
+                          </kbd>
+                        </div>
+                      </div>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Network Headers (Optional)</label>
+                      <div className="flex items-center justify-between">
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Network Headers (Optional)</label>
+                        <Badge variant="outline" className="text-[8px] bg-black/40 border-white/5 font-mono text-muted-foreground uppercase">Advanced Decryption</Badge>
+                      </div>
                       <Textarea 
-                        placeholder="Paste SPF, DKIM, DMARC headers..." 
-                        className="min-h-[100px] bg-surface border-border focus:ring-info/50 resize-none font-mono text-xs p-4"
+                        placeholder="Paste SMTP raw headers..." 
+                        className="min-h-[80px] bg-surface/50 border-border focus:ring-info/50 resize-none font-mono text-xs p-4 rounded-xl transition-all"
                         value={headers}
                         onChange={(e) => setHeaders(e.target.value)}
                       />
@@ -179,14 +197,21 @@ export default function App() {
                       className="space-y-6"
                     >
                       <Card className="border-border bg-card rounded-[20px] overflow-hidden shadow-xl">
-                        <CardHeader className="flex flex-col items-center justify-center py-10 border-b border-border bg-surface/30">
-                          <div className="text-[10px] text-muted-foreground uppercase tracking-widest mb-4">Threat Score</div>
-                          <div className={`text-7xl font-black leading-none mb-4 ${
-                            result.score >= 80 ? 'text-safe' : result.score >= 50 ? 'text-warning' : 'text-danger'
-                          }`}>
-                            {result.score}
+                        <CardHeader className="flex flex-col items-center justify-center py-10 border-b border-border bg-gradient-to-b from-surface/50 to-transparent">
+                          <div className="text-[10px] text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <Lock className="w-3 h-3 text-info" />
+                            Security Index
                           </div>
-                          <Badge className={`${getStatusColor(result.status)} uppercase tracking-widest px-4 py-1 rounded-full border`}>
+                          <div className="relative">
+                            <div className={`text-8xl font-black leading-none mb-4 tracking-tighter ${
+                              result.score >= 80 ? 'text-safe shadow-[0_0_40px_rgba(0,255,148,0.2)]' : 
+                              result.score >= 50 ? 'text-warning shadow-[0_0_40px_rgba(255,184,0,0.2)]' : 
+                              'text-danger shadow-[0_0_40px_rgba(255,75,75,0.2)]'
+                            }`}>
+                              {result.score}
+                            </div>
+                          </div>
+                          <Badge className={`${getStatusColor(result.status)} uppercase tracking-widest px-6 py-2 rounded-full border shadow-lg font-bold text-[10px]`}>
                             {result.status}
                           </Badge>
                         </CardHeader>
@@ -242,7 +267,7 @@ export default function App() {
                 
                 <div className="pt-6 border-t border-border">
                   <div className="text-[10px] text-muted-foreground uppercase tracking-widest mb-2">Database Version</div>
-                  <div className="font-mono text-[11px] text-info/60">v4.0.12-SENTINEL-STABLE</div>
+                  <div className="font-mono text-[11px] text-info/60">v4.0.12-ClickSheild-STABLE</div>
                 </div>
               </div>
             </div>
@@ -260,7 +285,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-12 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-info" />
-            <span className="font-bold tracking-widest uppercase text-sm">SENTINEL.AI</span>
+            <span className="font-bold tracking-widest uppercase text-sm">ClickSheild.AI</span>
           </div>
           <p className="text-muted-foreground text-[10px] uppercase tracking-widest">
             Secure Communications Protocol © 2024

@@ -37,7 +37,7 @@ export async function analyzeEmail(content: string, headers?: string): Promise<E
   `;
 
   const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash-exp",
+    model: "gemini-3-flash-preview",
     contents: prompt,
     config: {
       responseMimeType: "application/json",

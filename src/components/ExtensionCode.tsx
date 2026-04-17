@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const MANIFEST_JSON = `{
   "manifest_version": 3,
-  "name": "SENTINEL Email Shield",
+  "name": "ClickSheild Email Shield",
   "version": "1.0",
   "description": "AI-powered phishing protection for Gmail",
   "permissions": ["activeTab", "scripting", "storage"],
@@ -70,7 +70,7 @@ export function ExtensionCode() {
             manifest.json
           </CardTitle>
           <CardDescription className="text-[10px] uppercase tracking-widest text-muted-foreground">
-            Core configuration for the SENTINEL browser node.
+            Core configuration for the ClickSheild browser node.
           </CardDescription>
         </CardHeader>
         <CardContent className="p-0">
